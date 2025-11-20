@@ -1,0 +1,117 @@
+workflow:
+  name: {{workflow_name}}
+  description: "Blueprint Webhook Workflow"
+  division: {{division}}
+  startUpRef: "/workflow/states/state[Initial State_10]"
+  defaultLanguage: {{default_language}}
+  supportedLanguages:
+    en-us:
+      none: true
+  variables:
+    - jsonVariable:
+        name: Flow.jsonData
+        initialValue:
+          noValue: true
+        isInput: true
+        isOutput: false
+  settingsErrorHandling:
+    errorHandling:
+      endWorkflow:
+        none: true
+  states:
+    - state:
+        name: Initial State
+        refId: Initial State_10
+        variables:
+          - jsonVariable:
+              name: State.webhookBody
+              initialValue:
+                noValue: true
+              isInput: false
+              isOutput: false
+          - stringVariable:
+              name: State.workItemName
+              initialValue:
+                noValue: true
+              isInput: false
+              isOutput: false
+        actions:
+          - updateData:
+              name: Update Data
+              statements:
+                - json:
+                    variable: State.webhookBody
+                    value:
+                      exp: Flow.jsonData.webhooksInvocation.body
+          - decision:
+              name: Decision
+              condition:
+                exp: IsNotSetOrEmpty(State.webhookBody.name)
+              outputs:
+                "yes":
+                  actions:
+                    - updateData:
+                        name: Update Data
+                        statements:
+                          - string:
+                              variable: State.workItemName
+                              value:
+                                lit: Workitem from Webhook
+                "no":
+                  actions:
+                    - updateData:
+                        name: Update Data
+                        statements:
+                          - string:
+                              variable: State.workItemName
+                              value:
+                                exp: ToString(State.webhookBody.name)
+          - callData:
+              name: Call Data Action
+              category:
+                {{data_action_category}}:
+                  dataAction:
+                    {{workitem_data_action_name}}:
+                      inputs:
+                        name:
+                          exp: State.workItemName
+                        worktypeId:
+                          lit: {{worktype_id}}
+                        sample_text:
+                          exp: ToString(State.webhookBody.sample_text)
+                        sample_integer:
+                          exp: ToInt(State.webhookBody.sample_integer)
+                      successOutputs:
+                        id:
+                          noValue: true
+                      failureOutputs:
+                        errorCode:
+                          noValue: true
+                        status:
+                          noValue: true
+                        correlationId:
+                          noValue: true
+                        entityId:
+                          noValue: true
+                        entityName:
+                          noValue: true
+                        userMessage:
+                          noValue: true
+                        userParamsMessage:
+                          noValue: true
+                        userParams.key:
+                          noValue: true
+                        userParams.value:
+                          noValue: true
+                        details.errorCode:
+                          noValue: true
+                        details.fieldName:
+                          noValue: true
+                        details.entityId:
+                          noValue: true
+                        details.entityName:
+                          noValue: true
+          - endWorkflow:
+              name: End Workflow
+              exitReason:
+                noValue: true

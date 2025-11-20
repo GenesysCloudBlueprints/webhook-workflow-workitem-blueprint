@@ -1,0 +1,50 @@
+{
+  "name": "Create Workitem Action",
+  "integrationType": "purecloud-data-actions",
+  "actionType": "custom",
+  "config": {
+    "request": {
+      "requestUrlTemplate": "/api/v2/taskmanagement/workitems",
+      "requestType": "POST",
+      "headers": {},
+      "requestTemplate": "{\n    \"name\": \"${input.name}\",\n    \"typeId\": \"${input.worktypeId}\",\n    \"customFields\": {\n        \"sample_text\": \"${input.sample_text}\",\n        \"sample_integer\": ${input.sample_integer}\n    }\n}"
+    },
+    "response": {
+      "translationMap": {},
+      "translationMapDefaults": {},
+      "successTemplate": "${rawResult}"
+    }
+  },
+  "contract": {
+    "input": {
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "sample_integer": {
+            "type": "integer"
+          },
+          "sample_text": {
+            "type": "string"
+          },
+          "worktypeId": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "output": {
+      "successSchema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "secure": false
+}
