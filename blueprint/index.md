@@ -101,13 +101,13 @@ You can import the data actions using the following steps:
 
 ### Create and Import the Workflow
 
-There is an additional files in the `/exports` folder in the [blueprint repository](#clone-the-repository "Goes to the Clone the Repository section") which is `WebhookWorkflow.i3WorkFlow` that contains the workflow.
+There is an additional file in the `/exports` folder in the [blueprint repository](#clone-the-repository "Goes to the Clone the Repository section") which is `WebhookWorkflow.i3WorkFlow` that contains the workflow.
 
-#### Import the Worklow
+#### Import the Workflow
 
 1. In Genesys Cloud, navigate to **Admin** > **Architect** > **Flows:Workflow** and click **Add**.
 
-2. Enter a name for the inbound message flow and click **Create Flow**.
+2. Enter a name for the workflow and click **Create Flow**.
 
 3. From the **Save** menu, click **Import**.
 
